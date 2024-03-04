@@ -1,5 +1,4 @@
 import React from "react";
-import { MoviesGrid } from "./components/moviesGrid";
 import styles from "./App.module.css";
 import { Route, Link, Routes } from "react-router-dom";
 import { MovieDetails } from "./pages/MovieDetails";

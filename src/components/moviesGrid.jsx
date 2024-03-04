@@ -1,39 +1,55 @@
-import styles from "./moviesGrid.module.css";
-import { MovieCard } from "./MovieCard";
 import { useEffect, useState } from "react";
+import { useQuery } from "../hooks/useQuery";
 import { get } from "../utils/httpClient";
+import { MovieCard } from "./MovieCard";
+import styles from "./moviesGrid.module.css";
 import { Spinner } from "./Spinner";
-import { useLocation } from "react-router";
-import React from "react";
-import { useQuery } from "../hook/useQuery";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useLocation } from "react-router-dom"
+import { Empty } from "./empty";
 
-export function MoviesGrid() {
+
+export function MoviesGrid({search}) {
   const [movies, setMovies] = useState([]);
-  const [isLoading, setisLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const location = useLocation();
+  const [hasMore, setHasMore] = useState(true);
 
-  const query = useQuery();
-  const search = query.get("search");
 
   useEffect(() => {
-    setisLoading(true);
+    setIsLoading(true);
     const searchUrl = search
-      ? "/search/movie?query=" + search
-      : "/discover/movie";
+      ? "/search/movie?query=" + search + "&page=" + page
+      : "/discover/movie?page=" + page;
     get(searchUrl).then((data) => {
-      setMovies(data.results);
-      setisLoading(false);
+      setMovies((prevMovies) => prevMovies.concat(data.results));
+      setHasMore(data.page < data.total_pages)
+      setIsLoading(false);
     });
-  }, [search]);
+  }, [search, page]);
 
-  if (isLoading) {
-    return <Spinner />;
-  }
 
+  useEffect(() => {
+      setMovies([]);
+      setPage(1);
+  }, [location.search]);
+
+if(!isLoading && movies.length===0){
+  return <div><Empty/></div>
+}
   return (
-    <ul className={styles.movieGrid}>
+    <InfiniteScroll
+    dataLength={movies.length}
+      hasMore={hasMore}
+      next={() => setPage((prevPage) => prevPage + 1)}
+      loader={<Spinner />}
+    >
+    <ul className={styles.moviesGrid}>
       {movies.map((movie) => (
         <MovieCard key={movie.id} movie={movie} />
       ))}
     </ul>
+    </InfiniteScroll>
   );
 }
