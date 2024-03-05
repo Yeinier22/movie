@@ -45,7 +45,7 @@ export function MovieDetails() {
           <strong>Description:</strong> {movie.overview}
         </p>
         <p>
-          <strong>Genres:</strong>
+          <strong>Genres: </strong>
           {movie.genres.map((genre) => genre.name).join(", ")}
         </p>
       </div>
