@@ -1,4 +1,4 @@
-<a href="https://movies-yeinier.netlify.app/" target="_blank">https://movies-yeinier.netlify.app/</a>
+https://movies-yeinier.netlify.app/
 
 # Getting Started with Create React App
 
