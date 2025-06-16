@@ -22,6 +22,8 @@ A React-based application that consumes The Movie Database (TMDb) API to display
 ## 🖼️ Demo
 ![preview](./screenshot.png)
 
+![preview](./Movie-demo.gif)
+
 🔗 [Live Site](https://movies-yeinier.netlify.app/)  
 🔗 [GitHub Repo](https://github.com/Yeinier22/movie)
 
